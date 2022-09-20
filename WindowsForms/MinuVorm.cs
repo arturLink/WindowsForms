@@ -15,6 +15,11 @@ namespace WindowsForms
         TreeView puu;
         Button nupp;
         Label silt;
+        CheckBox mruut1, mruut2;
+        RadioButton rnupp1,rnupp2, rnupp3, rnupp4;
+        PictureBox pilt;
+        ProgressBar riba;
+        Timer aeg;
         public MinuVorm()
         {
             //InitializeComponent();
@@ -29,6 +34,9 @@ namespace WindowsForms
             oksad.Nodes.Add(new TreeNode("Nupp-Button"));
             oksad.Nodes.Add(new TreeNode("Silt-Label"));
             oksad.Nodes.Add(new TreeNode("DialogAken-MessageBox"));
+            oksad.Nodes.Add(new TreeNode("Märkeruut-Checkbox"));
+            oksad.Nodes.Add(new TreeNode("Radionupp-RadioButton"));
+            oksad.Nodes.Add(new TreeNode("Edenemisriba-ProgressBar"));
 
             puu.AfterSelect += Puu_AfterSelect;
             puu.Nodes.Add(oksad);
@@ -37,6 +45,31 @@ namespace WindowsForms
 
         private void Puu_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            silt = new Label // внизу разные свойства для элементов
+            {
+                Text = "Minu esimene vorm",
+                Size = new Size(200, 50),
+                Location = new Point(200, 80),
+                Width = 100,
+                Height = 20,
+                ForeColor = Color.White,
+                BackColor = Color.Blue,
+                BorderStyle = BorderStyle.FixedSingle,
+            };
+            mruut1 = new CheckBox
+            {
+                Checked = false,
+                Text = "Üks",
+                Location = new Point(silt.Left + silt.Width, 0),
+                Height = 25,
+            };
+            mruut2 = new CheckBox
+            {
+                Checked = false,
+                Text = "Kaks",
+                Location = new Point(silt.Left + silt.Width, mruut1.Height),
+                Height = 25,
+            };
             if (e.Node.Text=="Nupp-Button")
             {
                 nupp=new Button();
@@ -77,6 +110,176 @@ namespace WindowsForms
                 {
                     MessageBox.Show("Sis töötame edasi lapsed");
                 }
+            }
+            else if (e.Node.Text== "Märkeruut-Checkbox")
+            {
+                mruut1 = new CheckBox
+                {
+                    Checked = false,
+                    Text = "Üks",
+                    Location=new Point(silt.Left+silt.Width,0),
+                    Height=25,
+                };
+                mruut2 = new CheckBox
+                {
+                    Checked = false,
+                    Text = "Kaks",
+                    Location = new Point(silt.Left + silt.Width, mruut1.Height),
+                    Height = 25,
+                };
+                mruut1.CheckedChanged += Mruut1_CheckedChanged;
+                mruut2.CheckedChanged += Mruut2_CheckedChanged;
+                
+
+                this.Controls.Add(mruut1);
+                this.Controls.Add(mruut2);
+            }
+            else if (e.Node.Text== "Radionupp-RadioButton")
+            {
+                rnupp1 = new RadioButton
+                {
+                    Text="Paremale",
+                    Width=112,
+                    Location=new Point(mruut2.Left+mruut2.Width, mruut1.Height+mruut2.Height),
+
+                };
+                rnupp2 = new RadioButton
+                {
+                    Text = "Vasakule",
+                    Width = 112,
+                    Location = new Point(mruut2.Left + mruut2.Width + rnupp1.Width, mruut1.Height + mruut2.Height),
+
+                };
+                rnupp3 = new RadioButton
+                {
+                    Text = "Ülesse",
+                    Width = 112,
+                    Location = new Point(mruut2.Left + mruut2.Width + rnupp1.Width + rnupp2.Width, mruut1.Height + mruut2.Height),
+
+                };
+                rnupp4 = new RadioButton
+                {
+                    Text = "Alla",
+                    Width = 112,
+                    Location = new Point(mruut2.Left + mruut2.Width + rnupp1.Width + rnupp2.Width + rnupp3.Width, mruut1.Height + mruut2.Height),
+
+                };
+
+                pilt = new PictureBox
+                {
+                    Image=new Bitmap("Slaming.png"),
+                    Location=new Point(300,300),
+                    Size = new Size(200,200),
+                    SizeMode=PictureBoxSizeMode.Zoom,
+                };
+
+                rnupp1.CheckedChanged += new EventHandler(Rnuppud_Changed);
+                rnupp2.CheckedChanged += new EventHandler(Rnuppud_Changed);
+                rnupp3.CheckedChanged += new EventHandler(Rnuppud_Changed);
+                rnupp4.CheckedChanged += new EventHandler(Rnuppud_Changed);
+
+                this.Controls.Add(rnupp1);
+                this.Controls.Add(rnupp2);
+                this.Controls.Add(rnupp3);
+                this.Controls.Add(rnupp4);
+                this.Controls.Add(pilt);
+            }
+            else if (e.Node.Text== "Edenemisriba-ProgressBar")
+            {
+                riba = new ProgressBar
+                {
+                    Width=400,
+                    Height=30,
+                    //Location=new Point(350,500),
+                    Value=0,
+                    Minimum=0,
+                    Maximum=100,
+                    Step=1,
+                    Dock=DockStyle.Bottom
+                };
+
+                aeg = new Timer();
+                aeg.Enabled=true;
+                aeg.Tick += Aeg_Tick;
+
+                this.Controls.Add(riba);
+            }
+        }
+
+
+        private void Aeg_Tick(object sender, EventArgs e)
+        {
+            riba.PerformStep();
+        }
+        private void Rnuppud_Changed(object sender, EventArgs e)
+        {
+            if (rnupp1.Checked==true)
+            {
+                pilt.Location = new Point(pilt.Left+10,pilt.Top);
+                rnupp1.Checked= false;
+            }
+            else if (rnupp2.Checked==true)
+            {
+                pilt.Location = new Point(pilt.Left -10, pilt.Top);
+                rnupp2.Checked = false;
+            }
+            else if (rnupp3.Checked == true)
+            {
+                pilt.Location = new Point(pilt.Left, pilt.Top + 10);
+                rnupp3.Checked = false;
+            }
+            else if (rnupp4.Checked == true)
+            {
+                pilt.Location = new Point(pilt.Left, pilt.Top-10);
+                rnupp4.Checked = false;
+            }
+        }
+
+        private void Mruut2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (mruut1.Checked == true && mruut2.Checked == true)
+            {
+                var vastus = MessageBox.Show("1+2=3", "Calculation",
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+            }
+            else if (mruut1.Checked == false && mruut2.Checked == false)
+            {
+                var vastus = MessageBox.Show("0+0=0", "Calculation",
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+            }
+            else if (mruut1.Checked == true && mruut2.Checked == false)
+            {
+                var vastus = MessageBox.Show("1+0=1", "Calculation",
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+            }
+            else if (mruut1.Checked == false && mruut2.Checked == true)
+            {
+                var vastus = MessageBox.Show("0+2=2", "Calculation",
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void Mruut1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (mruut1.Checked == true && mruut2.Checked == true)
+            {
+                var vastus = MessageBox.Show("1+2=3", "Calculation",
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+            }
+            else if (mruut1.Checked == false && mruut2.Checked == false)
+            {
+                var vastus = MessageBox.Show("0+0=0", "Calculation",
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+            }
+            else if (mruut1.Checked == true && mruut2.Checked == false)
+            {
+                var vastus = MessageBox.Show("1+0=1", "Calculation",
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+            }
+            else if (mruut1.Checked == false && mruut2.Checked == true)
+            {
+                var vastus = MessageBox.Show("0+2=2", "Calculation",
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
             }
         }
 
