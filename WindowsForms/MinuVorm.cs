@@ -20,6 +20,7 @@ namespace WindowsForms
         PictureBox pilt;
         ProgressBar riba;
         Timer aeg;
+        TextBox teksti;
         public MinuVorm()
         {
             //InitializeComponent();
@@ -37,10 +38,25 @@ namespace WindowsForms
             oksad.Nodes.Add(new TreeNode("Märkeruut-Checkbox"));
             oksad.Nodes.Add(new TreeNode("Radionupp-RadioButton"));
             oksad.Nodes.Add(new TreeNode("Edenemisriba-ProgressBar"));
+            oksad.Nodes.Add(new TreeNode("Tekstkast-TextBox"));
+            oksad.Nodes.Add(new TreeNode("LinkVorm"));
 
             puu.AfterSelect += Puu_AfterSelect;
             puu.Nodes.Add(oksad);
+            puu.DoubleClick += Puu_DoubleClick;
             this.Controls.Add(puu);
+        }
+
+        private void Puu_DoubleClick(object sender, EventArgs e)
+        {
+            if (teksti.Enabled)
+            {
+                teksti.Enabled = false;
+            }
+            else
+            {
+                teksti.Enabled = true;
+            }
         }
 
         private void Puu_AfterSelect(object sender, TreeViewEventArgs e)
@@ -204,8 +220,37 @@ namespace WindowsForms
 
                 this.Controls.Add(riba);
             }
+            else if (e.Node.Text== "Tekstkast-TextBox")
+            {
+                teksti = new TextBox
+                {
+                    Font= new Font("Arial",34,FontStyle.Bold),
+                    Location=new Point(350,400),
+                    Enabled=false,
+                };
+                //teksti.MouseDoubleClick += Teksti_MouseDoubleClick;
+
+                this.Controls.Add(teksti);
+            }
+            else if (e.Node.Text=="LinkVorm")
+            {
+                LinkVorm art =new LinkVorm("SoundPlayer","Play","Faili nimi");
+                art.ShowDialog();
+            }
+           
         }
 
+        //private void Teksti_MouseDoubleClick(object sender, MouseEventArgs e)
+        //{
+        //    if (teksti.Enabled)
+        //    {
+        //        teksti.Enabled = false;
+        //    }
+        //    else
+        //    {
+        //        teksti.Enabled = true;
+        //    }
+        //}
 
         private void Aeg_Tick(object sender, EventArgs e)
         {
