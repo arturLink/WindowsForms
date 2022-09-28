@@ -58,15 +58,15 @@ namespace WindowsForms
 
                 using (var muusika=new SoundPlayer(PlayList[rnd.Next(0,2)]))
                 {
-                    if (muusika == PlayList[1])
+                    if (muusika.ToString() == PlayList[0])
                     {
                         MessageBox.Show("Ahem Khem", "Muusika Nimi on", MessageBoxButtons.OK);
                     }
-                    else if (muusika == buzzer)
+                    else if (muusika.ToString() == PlayList[1])
                     {
                         MessageBox.Show("Bzzz bzzzz", "Muusika Nimi on", MessageBoxButtons.OK);
                     }
-                    else if (muusika == applause)
+                    else if (muusika.ToString() == PlayList[2])
                     {
                         MessageBox.Show("Clap, clap, clap", "Muusika Nimi on", MessageBoxButtons.OK);
                     }
@@ -79,16 +79,5 @@ namespace WindowsForms
                 MessageBox.Show("SAD");
             }
         }
-        //---------------------------sdelatConverter------------------
-        //public string SoundToString(SoundPlayer Sound)
-        //{
-        //    switch (Sound)
-        //    {
-        //        case "..\..\ahem_x.wav":
-        //            return Isik.sugu.naine;
-        //        default:
-        //            return Isik.sugu.mees;
-        //    }
-        //}
     }
 }
